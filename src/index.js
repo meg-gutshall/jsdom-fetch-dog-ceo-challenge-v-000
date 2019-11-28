@@ -30,12 +30,12 @@ function objectifyBreeds(breedData) {
   filterBreeds(breeds);
 }
 
-function renderBreeds() {
-  const breeds = breedData.message;
+function renderBreeds(breeds) {
   const breedList = document.getElementById('dog-breeds');
 
   for (const key in breeds) {
     const dogBreed = document.createElement('li');
+    dogBreed.innerText = key;
     dogBreed.addEventListener('click', textColor);
 
     // Challenge 3
