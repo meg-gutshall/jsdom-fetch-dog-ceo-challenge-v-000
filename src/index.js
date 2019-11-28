@@ -21,16 +21,21 @@ function renderImages(imageData) {
 function fetchBreeds() {
   fetch("https://dog.ceo/api/breeds/list/all")
     .then(resp => resp.json())
-    .then(breedData => renderBreeds(breedData))
+    .then(breedData => objectifyBreeds(breedData) )
 };
 
-function renderBreeds(breedData) {
+function objectifyBreeds(breedData) {
+  const breeds = breedData.message;
+  renderBreeds(breeds);
+  filterBreeds(breeds);
+}
+
+function renderBreeds() {
   const breeds = breedData.message;
   const breedList = document.getElementById('dog-breeds');
 
   for (const key in breeds) {
     const dogBreed = document.createElement('li');
-    dogBreed.innerText = key;
     dogBreed.addEventListener('click', textColor);
 
     // Challenge 3
@@ -59,20 +64,19 @@ function renderBreeds(breedData) {
 
 // Challenge 4
 
-function filterBreeds() {
+function filterBreeds(breeds) {
+  let dropdown = document.getElementById('breed-dropdown');
+  dropdown.addEventListener('change', (event) => {
+    let letter = event.target.value;
+    const mainBreeds = Object.keys(breeds);
+    let filtered = mainBreeds.filter(mainBreed => mainBreed.startsWith(letter));
 
+  });
 };
-
-// HTML Dropdown Code
-
-{/* <select id="breed-dropdown" name="select-breed">
-  <option value="a">a</option>
-  <option value="b">b</option>
-  <option value="c">c</option>
-  <option value="d">d</option>
-</select> */}
 
 document.addEventListener('DOMContentLoaded', function() {
   fetchImages();
   fetchBreeds();
 });
+
+// ** DO WHAT WORKS NOW - REFACTOR LATER!!
