@@ -1,19 +1,14 @@
 // Challenge 1
 
-function loadImages() {
+function fetchImages() {
   fetch("https://dog.ceo/api/breeds/image/random/4")
-  .then(function(response) {
-    if (!response.ok) {
-      throw new Error("HTTP error, status = " + response.status);
-    }
-    return response.json();
-  })
-  .then(imageData => renderImages(imageData))
+    .then(resp => resp.json())
+    .then(imageData => renderImages(imageData))
 };
 
 function renderImages(imageData) {
-  const frame = document.getElementById('dog-image-container');
   const imageLinks = imageData.message;
+  const frame = document.getElementById('dog-image-container');
   imageLinks.forEach(imageLink => {
     const dogImage = document.createElement('img');
     dogImage.src = imageLink;
@@ -80,7 +75,7 @@ function filterBreeds(breeds) {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-  loadImages();
+  fetchImages();
   fetchBreeds();
 });
 
