@@ -1,24 +1,23 @@
 // Challenge 1
 
-function loadImages() {
-  fetch("https://dog.ceo/api/breeds/image/random/4")
-  .then(function(response) {
-    if (!response.ok) {
-      throw new Error("HTTP error, status = " + response.status);
-    }
-    return response.json();
-  })
-  .then(imageData => renderImages(imageData))
+async function loadImages() {
+  const frame = document.getElementById('dog-image-container');
+  const imageData = await fetchImages();
+  renderImages(imageData);
+  
+  function renderImages(imageData) {
+    const imageLinks = imageData.message;
+    imageLinks.forEach(imageLink => {
+      const dogImage = document.createElement('img');
+      dogImage.src = imageLink;
+      frame.appendChild(dogImage);
+    })
+  };
 };
 
-function renderImages(imageData) {
-  const frame = document.getElementById('dog-image-container');
-  const imageLinks = imageData.message;
-  imageLinks.forEach(imageLink => {
-    const dogImage = document.createElement('img');
-    dogImage.src = imageLink;
-    frame.appendChild(dogImage);
-  })
+async function fetchImages() {
+  const resp = await fetch("https://dog.ceo/api/breeds/image/random/4");
+  return await resp.json();
 };
 
 // Challenge 2
