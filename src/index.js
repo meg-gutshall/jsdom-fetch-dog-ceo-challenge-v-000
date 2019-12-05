@@ -1,13 +1,18 @@
 async function loadImages() {
+  // Make the function asynchronous because the imageLinks array value requires an await
   const frame = document.getElementById('dog-image-container');
-  const imageData = await fetchImages();
-  renderImages(imageData);
+  // 
+  const imageLinks = await fetchImages();
+  renderImages(imageLinks);
+  // Pass the result of the fetch into the renderImages function
   
-  function renderImages(imageData) {
-    const imageLinks = imageData.message;
+  function renderImages(imageLinks) {
     imageLinks.forEach(imageLink => {
+    // Iterate through the imageLinks array
       const dogImage = document.createElement('img');
+      // Create an image element for each link
       dogImage.src = imageLink;
+      // Set the element's SRC property to the link URL
       frame.appendChild(dogImage);
     })
   };
@@ -15,15 +20,9 @@ async function loadImages() {
 
 async function fetchImages() {
   const resp = await fetch("https://dog.ceo/api/breeds/image/random/4");
-  return await resp.json();
+  const data = await resp.json();
+  return data.message;
 };
-
-// Render list of breeds
-  // Replace list of breeds according to dropdown filter
-    // Listen for change
-    // Retrieve selected value
-    // Filter breeds by starting letter
-    // Render new breeds list
 
 async function loadBreeds() {
   const breedList = document.getElementById('dog-breeds');
@@ -43,7 +42,11 @@ async function loadBreeds() {
     let letter = event.target.value;
     const mainBreeds = Object.keys(allBreeds);
     let filtered = mainBreeds.filter(mainBreed => mainBreed.startsWith(letter));
-    renderBreeds(filtered);
+    let filteredBreeds = {}
+    for (const element of filtered) {
+      filteredBreeds[element] = [];
+    }
+    renderBreeds(filteredBreeds);
   });
 
   function renderBreeds(breeds) {
@@ -74,13 +77,13 @@ async function loadBreeds() {
     event.currentTarget.style.color = "#009AE4";
   };
 
-  async function fetchBreeds() {
-    const resp = await fetch("https://dog.ceo/api/breeds/list/all");
-    const data = await resp.json();
-    return data.message;
-  };
 };
 
+async function fetchBreeds() {
+  const resp = await fetch("https://dog.ceo/api/breeds/list/all");
+  const data = await resp.json();
+  return data.message;
+};
 
 document.addEventListener('DOMContentLoaded', function() {
   loadImages();
